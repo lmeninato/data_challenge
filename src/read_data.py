@@ -9,11 +9,15 @@ def merge_row(results, count, row):
     This allows for searching for the (date, border, measure)
     combination upon which to aggregate in O(1) time.
 
+    Similarly, looking for the previous month's value to calculate
+    the running average can be done in O(1) time, since we just have
+    to check for the same key but with month = month - 1.
     :param results: Contains aggregated hashed rows
     :param count: line number in csv file
     :param row: row of csv files corresponding to the count param
     :return: results merged with the new hashed row
     """
+    # could return an OrderedDict to clean this up
     processed_row = process_row(count, row)
     year, month = processed_row[1], processed_row[2]
     border = processed_row[3]
@@ -32,14 +36,6 @@ def merge_row(results, count, row):
     else:
         results[(year, month, border, measure)] = value
     return results
-
-
-def group_by_month(processed_row):
-    """
-    :param processed_row result from process_row()
-    :return:
-    """
-    return None
 
 
 def process_row(row_num, data_row):
