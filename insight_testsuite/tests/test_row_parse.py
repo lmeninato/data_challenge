@@ -48,7 +48,7 @@ class RowParserTestCase(unittest.TestCase):
         self.assertEqual(value, 6483)
 
     def test_process_row(self):
-        self.assertEqual(self.processed_rows[0]['Month'], 3)
+        self.assertEqual(self.processed_rows[0][2], 3)
 
     def test_bad_input(self):
         pass
@@ -56,4 +56,3 @@ class RowParserTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
-
