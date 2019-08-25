@@ -123,4 +123,8 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
 
 
 if __name__ == '__main__':
-    read_csv_lines(path="../insight_testsuite/tests/test_1/input/Border_Crossing_Entry_Data.csv")
+    import sys
+    if len(sys.argv) > 1:
+        print(read_csv_lines(path=sys.argv[1]))
+    else:
+        print(read_csv_lines(path="insight_testsuite/tests/test_1/input/Border_Crossing_Entry_Data.csv"))
