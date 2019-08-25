@@ -1,6 +1,7 @@
 # My Notes
 
-We will want to use a set
+To do:
+
 
 
 # Insight Instructions

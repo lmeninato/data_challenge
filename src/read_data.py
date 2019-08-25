@@ -24,7 +24,6 @@ def merge_row(results, count, row):
     measure = processed_row[5]
     value = processed_row[6]
 
-    # user OrderedDict?
     hashed_row = OrderedDict([((year, month, border, measure), value)])
 
     if processed_row is None:
@@ -60,11 +59,8 @@ def process_row(row_num, data_row):
 
 
 def parse_int_field(item):
-    try:
-        item = int(item)
-        return item
-    except ValueError:
-        raise ValueError
+    item = int(item)
+    return item
 
 
 def parse_str_field(item):
@@ -75,6 +71,15 @@ def parse_str_field(item):
 
 
 def parse_field(parser, row_num, data_row, field):
+    """
+    Checks to make sure the data is parsed correctly.
+
+    :param parser: function to check for type, data validation, etc.
+    :param row_num: row number
+    :param data_row: row of data
+    :param field: desired field to parse
+    :return: field value
+    """
     item = data_row[field]
     try:
         parsed_item = parser(item)
@@ -96,6 +101,13 @@ def format_date(date):
 
 
 def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
+    """
+    Reads in lines and merges into results object. The merge_row function
+    defines the logic for aggregating by year, month, border, measure combinations.
+    :param path: path of input csv file
+    :return: OrderedDict of results
+    """
+
     # header = [['Index', 'Year', 'Month', 'Border', 'Date', 'Measure', 'Value', 'Average']]
     results = OrderedDict()
     with open(path, 'r') as f:
