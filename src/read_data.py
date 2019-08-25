@@ -100,6 +100,40 @@ def format_date(date):
     return datetime.strftime(date, '%m/%d/%Y %I:%M:%S %p')
 
 
+def binary_search(rows, row):
+    val_index = -1
+    mid = len(rows) // 2
+    if rows[mid][val_index] > row[val_index]:
+        return binary_search(rows[mid:], row)
+    elif rows[mid][val_index] < row[val_index]:
+        return binary_search(rows[:mid], row)
+    else:
+        return mid
+
+
+def insert_row(rows, row):
+    """
+    Insert rows for a set of rows with the same date.
+    Use binary search to find the index to insert where to insert row.
+    :param rows:
+    :param row:
+    :return:
+    """
+    if not rows:
+        return row
+
+    return rows
+
+
+def order_by_value(temp_dict):
+    ordered_results = []
+    for measures, value in temp_dict.items():
+        row = list(measures)
+        row.append(value)
+        ordered_results = insert_row(ordered_results, row)
+    return ordered_results
+
+
 def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
     """
     Reads in lines and merges into results object. The merge_row function
@@ -109,15 +143,29 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
     """
 
     # header = [['Index', 'Year', 'Month', 'Border', 'Date', 'Measure', 'Value', 'Average']]
-    results = OrderedDict()
+    results = []
     with open(path, 'r') as f:
         data = csv.DictReader(f)
+        current_date = (None, None)
+        temp_results = OrderedDict()
         for count, row in enumerate(data):
             try:
-                results = merge_row(results, count, row)
+                date = parse_field(parse_date, count, row, 'Date')
+                if not all(current_date):
+                    current_date = (date.year, date.month)
+                if current_date == (date.year, date.month):
+                    temp_results = merge_row(temp_results, count, row)
+                else:
+                    # current_date != date
+                    results.append(temp_results)  # modify to order
+                    temp_results = OrderedDict()
+                    current_date = (date.year, date.month)
+                    temp_results = merge_row(temp_results, count, row)
             except IOError as e:
                 print("I/O error({0}): {1}".format(e.errno, e.strerror))
                 print("Saving results, error occurred at row number: {}".format(count))
+        if temp_results != OrderedDict():
+            results.append(temp_results)  # modify to order
     # iterate through results writing to results.csv
     return results
 
