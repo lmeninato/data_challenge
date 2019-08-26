@@ -111,26 +111,13 @@ def binary_search(rows, row):
         return mid
 
 
-def insert_row(rows, row):
-    """
-    Insert rows for a set of rows with the same date.
-    Use binary search to find the index to insert where to insert row.
-    :param rows:
-    :param row:
-    :return:
-    """
-    if not rows:
-        return row
-
-    return rows
-
-
 def order_by_value(temp_dict):
     ordered_results = []
     for measures, value in temp_dict.items():
         row = list(measures)
         row.append(value)
-        ordered_results = insert_row(ordered_results, row)
+        ordered_results.append(row)
+    ordered_results.sort(key=lambda x: x[-1], reverse=True)
     return ordered_results
 
 
@@ -157,7 +144,8 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
                     temp_results = merge_row(temp_results, count, row)
                 else:
                     # current_date != date
-                    results.append(temp_results)  # modify to order
+                    temp_results = order_by_value(temp_results)
+                    results.extend(temp_results)
                     temp_results = OrderedDict()
                     current_date = (date.year, date.month)
                     temp_results = merge_row(temp_results, count, row)
@@ -165,7 +153,8 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
                 print("I/O error({0}): {1}".format(e.errno, e.strerror))
                 print("Saving results, error occurred at row number: {}".format(count))
         if temp_results != OrderedDict():
-            results.append(temp_results)  # modify to order
+            temp_results = order_by_value(temp_results)
+            results.extend(temp_results)
     # iterate through results writing to results.csv
     return results
 
