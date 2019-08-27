@@ -100,25 +100,15 @@ def format_date(date):
     return datetime.strftime(date, '%m/%d/%Y %I:%M:%S %p')
 
 
-def binary_search(rows, row):
-    val_index = -1
-    mid = len(rows) // 2
-    if rows[mid][val_index] > row[val_index]:
-        return binary_search(rows[mid:], row)
-    elif rows[mid][val_index] < row[val_index]:
-        return binary_search(rows[:mid], row)
-    else:
-        return mid
-
-
 def order_by_value(temp_dict):
-    ordered_results = []
-    for measures, value in temp_dict.items():
-        row = list(measures)
-        row.append(value)
-        ordered_results.append(row)
-    ordered_results.sort(key=lambda x: x[-1], reverse=True)
-    return ordered_results
+    # ordered_results = []
+    # for measures, value in temp_dict.items():
+    #     row = list(measures)
+    #     row.append(value)
+    #     ordered_results.append(row)
+    # ordered_results.sort(key=lambda x: x[-1], reverse=True)
+    # return ordered_results
+    return OrderedDict(sorted(temp_dict.items(), key=lambda x: x[1], reverse=True))
 
 
 def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
@@ -130,7 +120,7 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
     """
 
     # header = [['Index', 'Year', 'Month', 'Border', 'Date', 'Measure', 'Value', 'Average']]
-    results = []
+    results = OrderedDict()
     with open(path, 'r') as f:
         data = csv.DictReader(f)
         current_date = (None, None)
@@ -143,9 +133,9 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
                 if current_date == (date.year, date.month):
                     temp_results = merge_row(temp_results, count, row)
                 else:
-                    # current_date != date
+                    # new date
                     temp_results = order_by_value(temp_results)
-                    results.extend(temp_results)
+                    results.update(temp_results)
                     temp_results = OrderedDict()
                     current_date = (date.year, date.month)
                     temp_results = merge_row(temp_results, count, row)
@@ -154,7 +144,7 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
                 print("Saving results, error occurred at row number: {}".format(count))
         if temp_results != OrderedDict():
             temp_results = order_by_value(temp_results)
-            results.extend(temp_results)
+            results.update(temp_results)
     # iterate through results writing to results.csv
     return results
 
@@ -162,6 +152,8 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) > 1:
-        print(read_csv_lines(path=sys.argv[1]))
+        for k, v in read_csv_lines(path=sys.argv[1]).items():
+            print(k, v)
     else:
-        print(read_csv_lines(path="insight_testsuite/tests/test_1/input/Border_Crossing_Entry_Data.csv"))
+        for k, v in read_csv_lines(path="insight_testsuite/tests/test_1/input/Border_Crossing_Entry_Data.csv").items():
+            print(k, v)
