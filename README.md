@@ -15,6 +15,7 @@ Case to consider: what if the previous value occurs more than one month previous
 Do we fill-forward missing values, or interpolate, or fill-backward? Assume value for missing months is 0.
 
 - Add logging for errors, profiling time to run parts of code.
+- Write a bunch of test cases.
 
 
 # Insight Instructions
