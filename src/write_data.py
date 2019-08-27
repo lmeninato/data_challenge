@@ -21,7 +21,7 @@ def format_row(row, value, average):
     return formatted_row
 
 
-def write_rows(ordered_dict, path="output/results.csv"):
+def write_rows(ordered_dict, path="output/report.csv"):
     """
     Calculates averages from the ordered dict, formats the corresponding (Year, Month, Border, Measure)->Value
     and Average results into the desired row format. Then each row is written to the csv at the inputted path.
@@ -46,4 +46,3 @@ if __name__ == "__main__":
     output_path = sys.argv[2]
     read_input = read_csv_lines(path=input_path)
     write_rows(read_input, path=output_path)
-

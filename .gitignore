@@ -1,4 +1,7 @@
 .idea/
 venv/
 input/*.csv
+output/report.csv
 *.pyc
+insight_testsuite/results.txt
+insight_testsuite/temp/
