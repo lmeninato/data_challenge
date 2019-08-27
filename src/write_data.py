@@ -18,6 +18,7 @@ def write_rows(ordered_dict, path="output/results.csv"):
     averages = get_monthly_averages(ordered_dict)
     with open(path, 'w') as result_file:
         writer = csv.writer(result_file, delimiter=',')
+        # write header, e.g. writer.writerow(['Border', 'Date', 'Measure', 'Value', 'Average'])
         for row, average in zip(ordered_dict, reversed(averages)):
             formatted_row = format_row(row, ordered_dict[row], average)
             writer.writerow(formatted_row)
