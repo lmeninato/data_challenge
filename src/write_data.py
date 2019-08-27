@@ -9,12 +9,26 @@ def format_date(year, month):
 
 
 def format_row(row, value, average):
+    """
+    Formats the tuple, value, and average into the desired row format.
+    :param row: (Year, Month, Border, Measure)  tuple
+    :param value: hashed value corresponding to row tuple
+    :param average: average corresponding to row tuple
+    :return: Formatted row
+    """
     formatted_date = format_date(row[0], row[1])
     formatted_row = [row[2], formatted_date, row[3], value, average]
     return formatted_row
 
 
 def write_rows(ordered_dict, path="output/results.csv"):
+    """
+    Calculates averages from the ordered dict, formats the corresponding (Year, Month, Border, Measure)->Value
+    and Average results into the desired row format. Then each row is written to the csv at the inputted path.
+    :param ordered_dict: ordered dict of rows grouped by value for (Year, Month, Border, Measure)->Value combinations
+    :param path: location of output csv
+    :return: None
+    """
     averages = get_monthly_averages(ordered_dict)
     with open(path, 'w', newline='') as result_file:
         writer = csv.writer(result_file, delimiter=',')
