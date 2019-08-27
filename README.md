@@ -1,13 +1,18 @@
 # My Notes
 
 To do:
-* Need to assert correct ordering:
+- [x] Need to assert correct ordering:
 if index i > j, then row_i\[year\] <= row_j\[year\]
 if index i > j, then row_i\[month\] <= row_j\[month\]
 if index i > j, then row_i\[value\] <= row_j\[value\]
 with more time, i'd want to do a check that dates are decreasing
 data quality is high, so I will skip those assertions
-I will ensure that for a dates, rows are in decreasing order of value
+I will ensure that for a dates, rows are in decreasing order of value.
+- [] Add running monthly average:
+Note that the formula for a row's average column is the sum of previous values, divided by
+the number of months since the first occurrence of a border-measure combination.
+Case to consider: what if the previous value occurs more than one month previously?
+Do we fill-forward missing values, or interpolate, or fill-backward? Assume value for missing months is 0.
 
 
 # Insight Instructions

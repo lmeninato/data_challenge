@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
 from collections import OrderedDict
+from math import ceil
 
 
 def merge_row(results, count, row):
@@ -21,8 +22,8 @@ def merge_row(results, count, row):
     processed_row = process_row(count, row)
     year, month = processed_row[1], processed_row[2]
     border = processed_row[3]
-    measure = processed_row[5]
-    value = processed_row[6]
+    measure = processed_row[4]
+    value = processed_row[5]
 
     hashed_row = OrderedDict([((year, month, border, measure), value)])
 
@@ -47,12 +48,11 @@ def process_row(row_num, data_row):
     date = parse_field(parse_date, row_num, data_row, 'Date')
     if date is None:
         return None
-    formatted_date, year, month = format_date(date), date.year, date.month
     border = parse_field(parse_str_field, row_num, data_row, 'Border')
     measure = parse_field(parse_str_field, row_num, data_row, 'Measure')
     value = parse_field(parse_int_field, row_num, data_row, 'Value')
 
-    res = [row_num, date.year, date.month, border, formatted_date, measure, value]
+    res = [row_num, date.year, date.month, border, measure, value]
     if None in res:
         return None
     return res
@@ -96,19 +96,43 @@ def parse_date(date):
     return datetime.strptime(date, '%m/%d/%Y %I:%M:%S %p')
 
 
-def format_date(date):
-    return datetime.strftime(date, '%m/%d/%Y %I:%M:%S %p')
-
-
 def order_by_value(temp_dict):
-    # ordered_results = []
-    # for measures, value in temp_dict.items():
-    #     row = list(measures)
-    #     row.append(value)
-    #     ordered_results.append(row)
-    # ordered_results.sort(key=lambda x: x[-1], reverse=True)
-    # return ordered_results
     return OrderedDict(sorted(temp_dict.items(), key=lambda x: x[1], reverse=True))
+
+
+def get_month_difference(x, y):
+    """
+    Return number of months between year-month combinations
+    :param x: tuple (year, month)
+    :param y: tuple (year, month)
+    :return: integer
+    """
+    return abs((x[0]-y[0])*12 + x[1] - y[1])
+
+
+def get_monthly_averages(ordered_dict):
+    """
+
+    :param ordered_dict: (year, month, border, measure) -> value
+    :return: list of averages
+    """
+    border_measures = {}
+    averages = []
+    for key in reversed(ordered_dict):
+        temp_key = (key[2], key[3])  # (Border, Measure) tuple
+        current_value = ordered_dict[key]
+        if temp_key not in border_measures:
+            border_measures[temp_key] = {"year-month": (key[0], key[1]), "prev_total": current_value}
+            averages.append(0)
+        else:
+            current_month = (key[0], key[1])
+            first_month = border_measures[temp_key]["year-month"]
+            prev_total = border_measures[temp_key]["prev_total"]
+            month_diff = get_month_difference(first_month, current_month)
+            averages.append(ceil(prev_total/month_diff))
+            border_measures[temp_key]["prev_total"] += current_value
+    # post assertion: len(averages) == number of keys in ordered_dict
+    return averages
 
 
 def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
@@ -145,7 +169,9 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
         if temp_results != OrderedDict():
             temp_results = order_by_value(temp_results)
             results.update(temp_results)
-    # iterate through results writing to results.csv
+    # get_monthly_averages
+    # format each row
+    # write to csv
     return results
 
 
