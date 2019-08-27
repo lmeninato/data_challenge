@@ -18,7 +18,6 @@ def merge_row(results, count, row):
     :param row: row of csv files corresponding to the count param
     :return: results merged with the new hashed row
     """
-    # could return an OrderedDict to clean this up
     processed_row = process_row(count, row)
     year, month = processed_row[1], processed_row[2]
     border = processed_row[3]
@@ -142,8 +141,6 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
     :param path: path of input csv file
     :return: OrderedDict of results
     """
-
-    # header = [['Index', 'Year', 'Month', 'Border', 'Date', 'Measure', 'Value', 'Average']]
     results = OrderedDict()
     with open(path, 'r') as f:
         data = csv.DictReader(f)
@@ -169,17 +166,4 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
         if temp_results != OrderedDict():
             temp_results = order_by_value(temp_results)
             results.update(temp_results)
-    # get_monthly_averages
-    # format each row
-    # write to csv
     return results
-
-
-if __name__ == '__main__':
-    import sys
-    if len(sys.argv) > 1:
-        for k, v in read_csv_lines(path=sys.argv[1]).items():
-            print(k, v)
-    else:
-        for k, v in read_csv_lines(path="insight_testsuite/tests/test_1/input/Border_Crossing_Entry_Data.csv").items():
-            print(k, v)
