@@ -1,5 +1,6 @@
 import unittest
 from src.read_data import *
+from src.parser import *
 
 
 def read_in_entire_file(path="insight_testsuite/tests/test_1/input/Border_Crossing_Entry_Data.csv",
@@ -23,8 +24,10 @@ def read_in_entire_file(path="insight_testsuite/tests/test_1/input/Border_Crossi
 
 class RowParserTestCase(unittest.TestCase):
     def setUp(self):
-        self.all_rows = read_in_entire_file(path="test_1/input/Border_Crossing_Entry_Data.csv")
-        self.processed_rows = read_in_entire_file(path="test_1/input/Border_Crossing_Entry_Data.csv",
+        self.all_rows = read_in_entire_file(path="../insight_testsuite/tests/test_1/input/"
+                                                 "Border_Crossing_Entry_Data.csv")
+        self.processed_rows = read_in_entire_file(path="../insight_testsuite/tests/test_1/input/"
+                                                       "Border_Crossing_Entry_Data.csv",
                                                   process_test_row=True)
 
     def test_parse_str_border(self):
