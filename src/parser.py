@@ -30,9 +30,11 @@ def parse_int_field(item):
 
 def parse_str_field(item):
     if isinstance(item, str):
+        if item.isnumeric():
+            raise TypeError('Item {} is not a string, it is {}'.format(item, type(item)))
         return item
     else:
-        raise TypeError('Item {} is not string, it is {}'.format(item, type(item)))
+        raise TypeError('Item {} is not a string, it is {}'.format(item, type(item)))
 
 
 def parse_field(parser, row_num, data_row, field):
@@ -48,19 +50,12 @@ def parse_field(parser, row_num, data_row, field):
     item = data_row[field]
     try:
         parsed_item = parser(item)
-    except IOError as e:
+        return parsed_item
+    except (ValueError, TypeError, AttributeError) as e:
         # log error
-        print("I/O error({0}): {1}".format(e.errno, e.strerror))
-        return None
-    except ValueError:
-        # log error
-        print('Failed to parse field {0} with value {1} at row {2}'.format(field, item, row_num))
-        return None
-    except TypeError:
-        # log error
-        print('Failed to parse field {0} with value {1} at row {2}'.format(field, item, row_num))
-        return None
-    return parsed_item
+        print(e)
+        print('Failed to parse field at row {}'.format(row_num))
+        return -1
 
 
 def parse_date(date):

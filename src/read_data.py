@@ -85,7 +85,6 @@ def get_monthly_averages(ordered_dict):
             month_diff = get_month_difference(first_month, current_month)
             averages.append(-(-prev_total//month_diff))  # round up
             border_measures[temp_key]["prev_total"] += current_value
-    # post assertion: len(averages) == number of keys in ordered_dict
     return averages
 
 
@@ -102,22 +101,20 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
         current_date = (None, None)
         temp_results = OrderedDict()
         for count, row in enumerate(data):
-            try:
-                date = parse_field(parse_date, count, row, 'Date')
-                if not all(current_date):
-                    current_date = (date.year, date.month)
-                if current_date == (date.year, date.month):
-                    temp_results = merge_row(temp_results, count, row)
-                else:
-                    # new date
-                    temp_results = order_by_value(temp_results)
-                    results.update(temp_results)
-                    temp_results = OrderedDict()
-                    current_date = (date.year, date.month)
-                    temp_results = merge_row(temp_results, count, row)
-            except IOError as e:
-                print("I/O error({0}): {1}".format(e.errno, e.strerror))
-                print("Saving results, error occurred at row number: {}".format(count))
+            date = parse_field(parse_date, count, row, 'Date')
+            if date == -1:
+                continue
+            if not all(current_date):
+                current_date = (date.year, date.month)
+            if current_date == (date.year, date.month):
+                temp_results = merge_row(temp_results, count, row)
+            else:
+                # new date
+                temp_results = order_by_value(temp_results)
+                results.update(temp_results)
+                temp_results = OrderedDict()
+                current_date = (date.year, date.month)
+                temp_results = merge_row(temp_results, count, row)
         if temp_results != OrderedDict():
             temp_results = order_by_value(temp_results)
             results.update(temp_results)

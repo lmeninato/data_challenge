@@ -1,10 +1,7 @@
 Border,Date,Measure,Value,Average
-New Border,05/01/2019 12:00:00 AM,New Measure,3,2
-New Border,04/01/2019 12:00:00 AM,New Measure,2,1
-US-Mexico Border,03/01/2019 12:00:00 AM,Pedestrians,346158,114487
-US-Canada Border,03/01/2019 12:00:00 AM,Truck Containers Full,6483,0
-US-Canada Border,03/01/2019 12:00:00 AM,Trains,19,0
-New Border,03/01/2019 12:00:00 AM,New Measure,1,0
-US-Mexico Border,02/01/2019 12:00:00 AM,Pedestrians,172163,56810
-US-Canada Border,02/01/2019 12:00:00 AM,Truck Containers Empty,1319,0
-US-Mexico Border,01/01/2019 12:00:00 AM,Pedestrians,56810,0
+New Border,05/01/2019 12:00:00 AM,New Measure,50,20
+New Border,04/01/2019 12:00:00 AM,New Measure,40,15
+New Border,03/01/2019 12:00:00 AM,New Measure,30,10
+New Border,02/01/2019 12:00:00 AM,New Measure,20,5
+New Border,01/01/2019 12:00:00 AM,New Measure,10,0
+New Border,12/01/2018 12:00:00 AM,New Measure,0,0
