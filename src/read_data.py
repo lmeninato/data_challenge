@@ -1,6 +1,5 @@
 import csv
 from collections import OrderedDict
-from math import ceil
 from parser import process_row, parse_field, parse_date
 
 
@@ -84,7 +83,7 @@ def get_monthly_averages(ordered_dict):
             first_month = border_measures[temp_key]["year-month"]
             prev_total = border_measures[temp_key]["prev_total"]
             month_diff = get_month_difference(first_month, current_month)
-            averages.append(ceil(prev_total/month_diff))
+            averages.append(-(-prev_total//month_diff))  # round up
             border_measures[temp_key]["prev_total"] += current_value
     # post assertion: len(averages) == number of keys in ordered_dict
     return averages
