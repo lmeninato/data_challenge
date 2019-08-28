@@ -41,7 +41,7 @@ def merge_row(results, count, row):
 
 def order_by_value(temp_dict):
     """
-    Need the dict key-value pairs to be in the correct order (descending by value)
+    Need the dict key-value pairs to be in the correct order (descending by value).
     :param temp_dict: OrderedDict of measures with the same date
     :return: OrderedDict in correct order
     """
@@ -50,7 +50,7 @@ def order_by_value(temp_dict):
 
 def get_month_difference(x, y):
     """
-    Return number of months between year-month combinations
+    Return number of months between year-month combinations.
     :param x: tuple (year, month)
     :param y: tuple (year, month)
     :return: integer
@@ -60,8 +60,15 @@ def get_month_difference(x, y):
 
 def get_monthly_averages(ordered_dict):
     """
-
+    Takes advantage of the hashing the (year, month, border, measure) -> key-value pairs.
+    We also have to keep track of the previous total for a given key, and the first occurrence of a key.
+    Then the formula: average = (previous total)/(month distance) yields
+    the rolling average monthly number of crossings.
     :param ordered_dict: (year, month, border, measure) -> value
+    key[0] : Year
+    key[1] : Month
+    key[2] : Border
+    key[3] : Measure
     :return: list of averages
     """
     border_measures = {}
