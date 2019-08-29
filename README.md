@@ -19,7 +19,8 @@ For the `Year` field, there is likely going to be less than 100 valid values. Si
 be an arbitrary quantity of unique `Measure` fields, the Transportation Website lists less than 15 possible
 measures. Assuming each field requires less than 100 bytes of storage, the upper bound on memory required
 to store a hash table of the reduced key-value pairs would be 12\*2\*100\*15 = 36K \* (100 bytes) or approximately
-3.6MB of memory. 
+3.6MB of memory (this could be dramatically lower, if we used something like a Huffman Coding to store each
+unique field value as the minimal amount of bytes). 
 
 With this setup in place, the remaining steps are fairly simple. Thanks to hashing our key-value pairs, we can track
 the first occurrence of a `(Measure, Border)` pair and the corresponding running total value for the pair.
@@ -31,6 +32,15 @@ to a list, then sort in descending order in the following manner:
 * `Border`
 
 Then we write each row in the list of lists to `results.csv`.
+
+## Online Algorithm
+
+The main concern over using a streaming algorithm is without a date ordering we would still have to store N rows in
+the worst case (either in memory, or by writing to a temporary table on a disk). With some ordering this approach
+would work well, and for a problem where the hashing trick does not have such a small upper bound on the additonal
+space required a streaming algorithm would be necessary to not exhaust the system's memory (or to avoid read/write
+from disk for temporary storage).
+
 
 
 # Insight Instructions
