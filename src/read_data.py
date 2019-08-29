@@ -38,15 +38,6 @@ def merge_row(results, count, row):
     return results
 
 
-def order_by_value(temp_dict):
-    """
-    Need the dict key-value pairs to be in the correct order (descending by value).
-    :param temp_dict: OrderedDict of measures with the same date
-    :return: OrderedDict in correct order
-    """
-    return OrderedDict(sorted(temp_dict.items(), key=lambda x: x[1], reverse=True))
-
-
 def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
     """
     Reads in lines and merges into results object. The merge_row function
@@ -68,13 +59,10 @@ def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
             if current_date == (date.year, date.month):
                 temp_results = merge_row(temp_results, count, row)
             else:
-                # new date
-                temp_results = order_by_value(temp_results)
                 results.update(temp_results)
                 temp_results = OrderedDict()
                 current_date = (date.year, date.month)
                 temp_results = merge_row(temp_results, count, row)
         if temp_results != OrderedDict():
-            temp_results = order_by_value(temp_results)
             results.update(temp_results)
     return results

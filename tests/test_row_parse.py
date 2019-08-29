@@ -3,7 +3,7 @@ from src.read_data import *
 from src.parser import *
 
 
-def read_in_entire_file(path="insight_testsuite/tests/test_1/input/Border_Crossing_Entry_Data.csv",
+def read_in_entire_file(path="../insight_testsuite/tests/test_1/input/Border_Crossing_Entry_Data.csv",
                         process_test_row=False):
     """
     Used to quickly load an entire file into memory. For testing and development.

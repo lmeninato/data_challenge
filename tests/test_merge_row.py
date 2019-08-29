@@ -1,6 +1,6 @@
 import unittest
-from src.read_data import read_csv_lines, merge_row
 from collections import OrderedDict
+from src.read_data import read_csv_lines, merge_row
 
 
 class RowMergeTestCase(unittest.TestCase):
@@ -35,8 +35,6 @@ class RowMergeTestCase(unittest.TestCase):
 
         new_merged_rows = merge_row(self.merged_rows, count, row)
         self.assertEqual(new_merged_rows[self.new_tuple], 2)
-
-    # test adding bad inputs
 
 
 if __name__ == "__main__":

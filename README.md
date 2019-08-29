@@ -9,8 +9,8 @@ reduced to a single key-value pair (the value being the sum of the value field a
 The time complexity would require reading O(N) lines and O(1) additional space to calculate and 
 store the result in memory. In the worst case, each row is reduced a unique key-value pair. The read 
 time would be the same, but the algorithm would require O(N) space to store each row. For datasets
-larger than the system's available memory, this program would not befeasible. Later I will outline
-some ideas for handling such a dataset.
+larger than the system's available memory, this program would not be feasible. Later I will outline
+some ideas for handling such data.
 
 Keeping in mind this concern, I still implemented the solution by using this hashing trick. Due to the 
 nature of the data, there is a pretty reasonable upper bound on the additional space required to store
@@ -37,7 +37,7 @@ Then we write each row in the list of lists to `results.csv`.
 
 The main concern over using a streaming algorithm is without a date ordering we would still have to store N rows in
 the worst case (either in memory, or by writing to a temporary table on a disk). With some ordering this approach
-would work well, and for a problem where the hashing trick does not have such a small upper bound on the additonal
+would work well, and for a problem where the hashing trick does not have such a small upper bound on the additional
 space required a streaming algorithm would be necessary to not exhaust the system's memory (or to avoid read/write
 from disk for temporary storage).
 
