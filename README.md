@@ -33,7 +33,7 @@ to a list, then sort in descending order in the following manner:
 
 Then we write each row in the list of lists to `results.csv`.
 
-## Online Algorithm
+## Streaming Algorithm
 
 The main concern over using a streaming algorithm is without a date ordering we would still have to store N rows in
 the worst case (either in memory, or by writing to a temporary table on a disk). With some ordering this approach
