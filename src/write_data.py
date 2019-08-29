@@ -61,7 +61,8 @@ def get_monthly_averages(ordered_dict):
 
 def sort_results(unsorted_dict):
     """
-    O(nlogn) complexity.
+    Sorts by year, month, value, measure, border in descending order.
+    Works well on nearly sorted data (O(n) best case).
 
     key[0] : Year
     key[1] : Month
@@ -71,7 +72,7 @@ def sort_results(unsorted_dict):
     key[6] : Average
 
     :param unsorted_dict: (year, month, border, measure) -> value
-    :return: generator of sorted order
+    :return: list of sorted results
     """
     averages = get_monthly_averages(unsorted_dict)
     row_list = []
@@ -85,7 +86,7 @@ def sort_results(unsorted_dict):
 
 def write_rows(ordered_dict, path="output/report.csv"):
     """
-    Ordered dict is mostly sorted.
+    Assuming OrderedDict is mostly sorted for performance.
 
     Calculates averages from the ordered dict, formats the corresponding (Year, Month, Border, Measure)->Value
     and Average results into the desired row format. Then each row is written to the csv at the inputted path.

@@ -1,0 +1,4 @@
+Port Name,State,Port Code,Border,Date,Measure,Value,Location
+port,state,code,BorderA,01/01/2018 12:00:00 AM,Measure,1,POINT (-72.09944 45.005)
+port,state,code,BorderB,01/01/2018 12:00:00 AM,Measure,1,POINT (-72.09944 45.005)
+
