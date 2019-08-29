@@ -1,21 +1,35 @@
-# My Notes
+# Notes
 
-To do:
-- [x] Need to assert correct ordering:
-if index i > j, then row_i\[year\] <= row_j\[year\]
-if index i > j, then row_i\[month\] <= row_j\[month\]
-if index i > j, then row_i\[value\] <= row_j\[value\]
-with more time, i'd want to do a check that dates are decreasing
-data quality is high, so I will skip those assertions
-I will ensure that for a dates, rows are in decreasing order of value.
-- [x] Add running monthly average:
-Note that the formula for a row's average column is the sum of previous values, divided by
-the number of months since the first occurrence of a border-measure combination.
-Case to consider: what if the previous value occurs more than one month previously?
-Do we fill-forward missing values, or interpolate, or fill-backward? Assume value for missing months is 0.
+My approach to the problem is to reduce the `input.csv` file containing `N` lines to `n` 
+key-value pairs where `n << N`. This approach is efficient when many rows map to the same tuple. 
+Each row is comprised of five relevant features: `Year`, `Month`, `Border`, `Measure`, and `Value`. 
+We can parse each row as a key-value pair `(Year, Month, Border, Measure):Value`.
+This approach is efficient when many rows map to the same tuple key. In the best case, all rows are
+reduced to a single key-value pair (the value being the sum of the value field across all rows).
+The time complexity would require reading O(N) lines and O(1) additional space to calculate and 
+store the result in memory. In the worst case, each row is reduced a unique key-value pair. The read 
+time would be the same, but the algorithm would require O(N) space to store each row. For datasets
+larger than the system's available memory, this program would not befeasible. Later I will outline
+some ideas for handling such a dataset.
 
-- Add logging for errors, profiling time to run parts of code.
-- Write a bunch of test cases.
+Keeping in mind this concern, I still implemented the solution by using this hashing trick. Due to the 
+nature of the data, there is a pretty reasonable upper bound on the additional space required to store
+the key-value pairs. The `Month` and `Border` fields can only have 12 and 2 unique possible values, respectively.
+For the `Year` field, there is likely going to be less than 100 valid values. Similarly, while there could
+be an arbitrary quantity of unique `Measure` fields, the Transportation Website lists less than 15 possible
+measures. Assuming each field requires less than 100 bytes of storage, the upper bound on memory required
+to store a hash table of the reduced key-value pairs would be 12\*2\*100\*15 = 36K \* (100 bytes) or approximately
+3.6MB of memory. 
+
+With this setup in place, the remaining steps are fairly simple. Thanks to hashing our key-value pairs, we can track
+the first occurrence of a `(Measure, Border)` pair and the corresponding running total value for the pair.
+Then the running monthly average is `(previous_total)/(current_month - first_month)`. Then we format and add each row
+to a list, then sort in descending order in the following manner:
+* `Date`
+* `Value` 
+* `Measure`
+* `Border`
+Then we write each row in the list of lists to `results.csv`.
 
 
 # Insight Instructions
