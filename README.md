@@ -29,6 +29,7 @@ to a list, then sort in descending order in the following manner:
 * `Value` 
 * `Measure`
 * `Border`
+
 Then we write each row in the list of lists to `results.csv`.
 
 
