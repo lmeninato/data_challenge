@@ -47,47 +47,6 @@ def order_by_value(temp_dict):
     return OrderedDict(sorted(temp_dict.items(), key=lambda x: x[1], reverse=True))
 
 
-def get_month_difference(x, y):
-    """
-    Return number of months between year-month combinations.
-    :param x: tuple (year, month)
-    :param y: tuple (year, month)
-    :return: integer
-    """
-    return abs((x[0]-y[0])*12 + x[1] - y[1])
-
-
-def get_monthly_averages(ordered_dict):
-    """
-    Takes advantage of the hashing the (year, month, border, measure) -> key-value pairs.
-    We also have to keep track of the previous total for a given key, and the first occurrence of a key.
-    Then the formula: average = (previous total)/(month distance) yields
-    the rolling average monthly number of crossings.
-    :param ordered_dict: (year, month, border, measure) -> value
-    key[0] : Year
-    key[1] : Month
-    key[2] : Border
-    key[3] : Measure
-    :return: list of averages
-    """
-    border_measures = {}
-    averages = []
-    for key in reversed(ordered_dict):
-        temp_key = (key[2], key[3])  # (Border, Measure) tuple
-        current_value = ordered_dict[key]
-        if temp_key not in border_measures:
-            border_measures[temp_key] = {"year-month": (key[0], key[1]), "prev_total": current_value}
-            averages.append(0)
-        else:
-            current_month = (key[0], key[1])
-            first_month = border_measures[temp_key]["year-month"]
-            prev_total = border_measures[temp_key]["prev_total"]
-            month_diff = get_month_difference(first_month, current_month)
-            averages.append(-(-prev_total//month_diff))  # round up
-            border_measures[temp_key]["prev_total"] += current_value
-    return averages
-
-
 def read_csv_lines(path="../input/Border_Crossing_Entry_Data.csv"):
     """
     Reads in lines and merges into results object. The merge_row function
