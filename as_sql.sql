@@ -1,5 +1,5 @@
 select "Year", "Month", "Border", "Measure", "Value", 
-COALESCE("Average", 0)
+COALESCE("Average", 0) as "Average"
 from
 (select "Year", "Month", "Border", "Measure", "Value",
 LAG("avg_value") OVER
